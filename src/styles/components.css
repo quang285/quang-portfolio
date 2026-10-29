@@ -1,0 +1,77 @@
+/* NDQ Blueprint v2: components. Tokens come from tokens.css as CSS variables. */
+.ndq{font-family:var(--font-sans);color:var(--text)}
+.ndq-mono{font-family:var(--font-mono);font-size:14px;line-height:20px;letter-spacing:.02em}
+.ndq-display{font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.01em;line-height:1.05;margin:0}
+.ndq-kicker{font-family:var(--font-mono);font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+/* cut corner + even ring outline (works at any size) */
+.ndq-cut,.cut{position:relative;clip-path:polygon(0 0,calc(100% - var(--cut,28px)) 0,100% var(--cut,28px),100% 100%,0 100%)}
+.ndq-cut::before,.cut::before{content:"";position:absolute;inset:0;background:var(--bc,var(--panel-border));pointer-events:none;z-index:2;clip-path:polygon(evenodd,0 0,calc(100% - var(--cut,28px)) 0,100% var(--cut,28px),100% 100%,0 100%,0 0,var(--bw,1px) var(--bw,1px),var(--bw,1px) calc(100% - var(--bw,1px)),calc(100% - var(--bw,1px)) calc(100% - var(--bw,1px)),calc(100% - var(--bw,1px)) calc(var(--cut,28px) + var(--bw,1px) * .4142),calc(100% - var(--cut,28px) - var(--bw,1px) * .4142) var(--bw,1px),var(--bw,1px) var(--bw,1px))}
+/* panel: section box over the blueprint */
+.ndq-panel{--cut:28px;background:var(--panel);-webkit-backdrop-filter:blur(1px);backdrop-filter:blur(1px);padding:40px}
+/* buttons */
+.ndq-btn{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 24px;border-radius:2px;text-decoration:none;font-family:var(--font-mono);font-size:14px;transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out)}
+.ndq-btn.primary{background:var(--accent-fill);color:var(--on-accent)}
+.ndq-btn.primary:hover,.ndq-btn.primary:focus-visible{background:var(--accent-hover);color:var(--on-accent);box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--accent-fill)}
+.ndq-btn.secondary{border:1px solid var(--accent-secondary);color:var(--accent-secondary)}
+.ndq-btn.secondary:hover,.ndq-btn.secondary:focus-visible{background:var(--accent-secondary);color:var(--bg)}
+.ndq-link{color:var(--accent);font-family:var(--font-mono);font-size:14px}
+/* nav */
+.ndq-nav{display:flex;justify-content:space-between;align-items:center;padding:4px 32px;background:color-mix(in srgb,var(--bg) 86%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:2px solid var(--accent);font-family:var(--font-mono);font-size:14px}
+.ndq-nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
+.ndq-nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 8px;color:var(--text);text-decoration:none;transition:color var(--dur-fast) var(--ease-out)}
+.ndq-nav a::before{content:"[ ";opacity:0;white-space:pre}.ndq-nav a::after{content:" ]";opacity:0;white-space:pre}
+.ndq-nav a:hover,.ndq-nav a[aria-current]{color:var(--accent)}
+.ndq-nav a[aria-current]::before,.ndq-nav a[aria-current]::after{opacity:1}
+/* status: LED + ID */
+.ndq-led{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--led-off);margin-right:6px;vertical-align:1px}
+.ndq-led.on{background:var(--accent)}
+.ndq-tag{font-family:var(--font-mono);font-size:14px;color:var(--text-muted)}
+/* chips */
+.ndq-chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.ndq-chip{font-family:var(--font-mono);font-size:14px;color:var(--text);border:1px solid var(--panel-border);padding:4px 8px}
+/* project card */
+.ndq-cardwrap{flex:1 1 320px;position:relative;display:flex;transition:transform var(--dur-hover) var(--ease-out)}
+.ndq-cardwrap:hover,.ndq-cardwrap:focus-within{transform:scale(1.03);z-index:2}
+.ndq-card{--cut:34px;--bw:1px;--bc:var(--panel-border);position:relative;z-index:1;flex:1;display:flex;flex-direction:column;gap:4px;padding:16px;background:var(--card);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);color:var(--text);transition:background-color var(--dur-fast) var(--ease-out)}
+.ndq-card:hover,.ndq-card:focus-within{background:var(--card-hover);--bc:var(--accent)}
+.ndq-card:focus-within{box-shadow:inset 0 0 0 3px var(--accent)}
+.ndq-card .img{--cut:20px;--bc:var(--panel-border);aspect-ratio:4/3;margin-bottom:16px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--bg) 55%,transparent);font-family:var(--font-mono);font-size:14px;color:var(--text-muted)}
+.ndq-card .t{margin:0;font-size:22px;line-height:28px;font-weight:600}
+.ndq-card .t a{color:inherit;text-decoration:none}.ndq-card .t a::after{content:"";position:absolute;inset:0;z-index:3}
+.ndq-card .t a:focus-visible{outline:none}
+.ndq-card .r{margin:0;font-size:14px;line-height:20px;color:var(--text-muted)}
+.ndq-card .ndq-chips{margin-top:auto;padding-top:16px}
+@media (min-width:1100px){.ndq-cardwrap{flex:0 0 calc((100% - 48px)/3)}}
+/* title block */
+.ndq-tb{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));border:1px solid var(--panel-border);margin:0}
+.ndq-tb>div{padding:8px 16px;border-right:1px solid var(--panel-border);border-bottom:1px solid var(--panel-border);margin:0 -1px -1px 0}
+.ndq-tb .k{font-family:var(--font-mono);font-size:14px;color:var(--text-muted)}
+.ndq-tb .v{font-family:var(--font-mono);font-size:15px;line-height:22px;margin:4px 0 0}
+/* spec / parts table */
+.ndq-spec{border-collapse:collapse;width:100%;font-size:15px;line-height:22px;border:1px solid var(--panel-border);background:var(--panel);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.ndq-spec th,.ndq-spec td{text-align:left;padding:10px 16px;border-bottom:1px solid var(--panel-border);transition:background-color var(--dur-fast) var(--ease-out)}
+.ndq-spec thead th{background:var(--surface);font-family:var(--font-mono);font-size:14px;font-weight:400;color:var(--text-muted)}
+.ndq-spec th[scope=row]{font-family:var(--font-mono);font-size:14px;font-weight:400;color:var(--text-muted);background:var(--surface);width:40%}
+.ndq-spec .n{font-family:var(--font-mono);color:var(--accent)}
+.ndq-spec tr.hl td{background:var(--row-highlight)}
+/* exploded view parts */
+.ndq-xp{cursor:pointer}.ndq-xp>g{transform-box:fill-box;transform-origin:center;transition:transform var(--dur-hover) var(--ease-out),filter var(--dur-hover) var(--ease-out)}
+.ndq-xp polygon{fill:var(--holo-fill);stroke:var(--holo);stroke-width:1.5;transition:fill var(--dur-fast) var(--ease-out)}
+.ndq-xp:hover>g,.ndq-xp.on>g{transform:scale(1.08);filter:drop-shadow(0 0 6px var(--holo))}
+.ndq-xp:hover polygon,.ndq-xp.on polygon{fill:var(--holo-lit)}
+.ndq-xp .lead{stroke:var(--holo);stroke-width:1}.ndq-xp .ball{fill:var(--holo-fill);stroke:var(--holo);stroke-width:1.5}.ndq-xp text{fill:var(--holo-text);font-family:var(--font-mono);font-size:15px}
+/* annotation + scope */
+.ndq-ann{position:relative;background:var(--surface);border:1px solid var(--panel-border)}
+.ndq-ann svg line{stroke:var(--accent);stroke-width:1}.ndq-ann svg circle{fill:var(--accent)}
+.ndq-ann .lbl{position:absolute;font-family:var(--font-mono);font-size:14px;color:var(--accent)}
+.ndq-scope{padding:12px;background:var(--bezel);border:1px solid var(--panel-border);border-radius:2px}
+.ndq-scope .screen{position:relative;aspect-ratio:3/2;background:var(--screen);overflow:hidden}
+.ndq-scope svg{position:absolute;inset:0;width:100%;height:100%}
+.ndq-scope .grid line{stroke:var(--on-screen);stroke-opacity:.18}.ndq-scope .axis line{stroke:var(--on-screen);stroke-opacity:.4}
+.ndq-scope .trace{fill:none;stroke:var(--trace);stroke-width:2;filter:drop-shadow(0 0 3px var(--trace))}
+.ndq-scope .callout line{stroke:var(--on-screen)}.ndq-scope .callout circle{fill:var(--on-screen)}
+.ndq-scope span.callout{font-family:var(--font-mono);font-size:14px;color:var(--on-screen)}
+.ndq-scope .scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.035) 0 1px,transparent 1px 3px)}
+.ndq-scope .channels{display:flex;flex-wrap:wrap;gap:24px;margin-top:12px;font-family:var(--font-mono);font-size:14px;color:var(--text-muted)}.ndq-scope .channels b{font-weight:400;color:var(--trace)}
+.ndq-cursor{display:inline-block;width:8px;height:14px;background:var(--accent);vertical-align:-2px;animation:ndqblink 1.1s steps(1) infinite}@keyframes ndqblink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.ndq-btn,.ndq-cardwrap,.ndq-card,.ndq-xp>g,.ndq-xp polygon,.ndq-spec td{transition:none}.ndq-cardwrap:hover,.ndq-cardwrap:focus-within{transform:none}.ndq-cursor{animation:none}}

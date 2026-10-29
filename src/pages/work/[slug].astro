@@ -1,0 +1,163 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import TitleBlock from '../../components/TitleBlock.astro';
+import ScopePanel from '../../components/ScopePanel.astro';
+import SpecTable from '../../components/SpecTable.astro';
+
+export async function getStaticPaths() {
+  // Same order as the Work list on home: by date, newest first.
+  const all = (await getCollection('projects')).sort((a, b) => b.data.sort - a.data.sort);
+  return all.map((p, i) => ({
+    params: { slug: p.id },
+    props: { p, prev: all[i - 1], next: all[i + 1] },
+  }));
+}
+const { p, prev, next } = Astro.props;
+const d = p.data;
+const base = import.meta.env.BASE_URL;
+const kicker = d.kicker ?? `${d.chips[0] ?? '[Discipline]'} · ${d.date}`;
+const facts = d.facts.length ? d.facts : [
+  { k: 'Project ID', v: d.prj },
+  { k: 'Date', v: d.date },
+  { k: 'Discipline', v: d.chips[0] ?? '[Discipline]' },
+  { k: 'Team', v: '[N] people' },
+  { k: 'Status', v: d.active ? 'Active' : 'Complete', led: true },
+];
+const tools = d.tools.length ? d.tools.join(', ') : '[SolidWorks, Arduino, ...]';
+const part = d.part === '[My part]' ? '[What you owned, as shared decisions with divided deliverables]' : d.part;
+const specRows = Array.from({ length: 4 }, () => ({ k: '[Spec]', v: '[Value with unit]' }));
+---
+<Base title={`${d.title} | Nguyen Duy Quang`}>
+  <div class="wrap">
+    <TitleBlock prj={d.prj} kicker={kicker} title={d.title} result={d.result} facts={facts} active={d.active} />
+    <main>
+      <div class="cols">
+        <div class="body">
+          <ScopePanel variant="side" tools={tools} part={part} />
+          <ScopePanel variant="inline" tools={tools} part={part} />
+
+          <section aria-labelledby="s-problem" class="first">
+            <h2 id="s-problem" class="stencil">Problem</h2>
+            <p>[Two or three sentences: who needed what, and why existing options fell short.]</p>
+          </section>
+
+          <section aria-labelledby="s-con">
+            <h2 id="s-con" class="stencil">Constraints</h2>
+            <SpecTable chips={['Weight', 'Budget', 'Time', 'Safety']} rows={specRows} />
+          </section>
+
+          <section aria-labelledby="s-dec">
+            <h2 id="s-dec" class="stencil">Decisions and trade-offs</h2>
+            {[0, 1].map(() => (
+              <div class="dec">
+                <div class="w">[What you chose]</div>
+                <div class="rej">Rejected: [What you rejected]</div>
+                <p>[Why, in one or two sentences, tied to a constraint.]</p>
+              </div>
+            ))}
+          </section>
+
+          <section aria-labelledby="s-build">
+            <h2 id="s-build" class="stencil">Build</h2>
+            <div class="cad" role="img" aria-label="Placeholder: exploded CAD view with callouts">
+              <svg viewBox="0 0 720 480" preserveAspectRatio="none" aria-hidden="true">
+                <line x1="260" y1="200" x2="430" y2="90" /><circle cx="260" cy="200" r="3" />
+                <line x1="380" y1="320" x2="540" y2="380" /><circle cx="380" cy="320" r="3" />
+              </svg>
+              <span style="left:61%;top:15%">[Part]</span>
+              <span style="left:76%;top:77%">[Part]</span>
+            </div>
+            <p class="cap">[Exploded CAD view or wiring diagram, 2 to 5 callouts]</p>
+            <p>[How it was made: mechanism, electronics, control, in plain terms.]</p>
+          </section>
+
+          <section aria-labelledby="s-broke" class="broke">
+            <h2 id="s-broke" class="stencil">What broke</h2>
+            {[0, 1].map(() => (
+              <div class="fail">
+                <div class="w">[What failed, and when]</div>
+                <p class="mu">Fix: [What you changed]</p>
+              </div>
+            ))}
+          </section>
+
+          <section aria-labelledby="s-res">
+            <h2 id="s-res" class="stencil">Result and evidence</h2>
+            <figure class="scope">
+              <div class="screen" role="img" aria-label="Placeholder: test plot of measured against target, drawn on an oscilloscope-style screen">
+                <svg viewBox="0 0 500 250" preserveAspectRatio="none" aria-hidden="true">
+                  <g class="grid">
+                    {[50, 100, 150, 200, 300, 350, 400, 450].map((x) => <line x1={x} y1="0" x2={x} y2="250" />)}
+                    {[31, 62, 94, 156, 188, 219].map((y) => <line x1="0" y1={y} x2="500" y2={y} />)}
+                  </g>
+                  <g class="ax"><line x1="250" y1="0" x2="250" y2="250" /><line x1="0" y1="125" x2="500" y2="125" /></g>
+                  <path class="ref" d="M0 200 C 80 200 120 70 200 70 S 320 90 500 80" />
+                  <path class="trace" pathLength="1" d="M0 205 C 70 205 110 60 190 62 S 260 100 300 92 S 420 70 500 84" />
+                </svg>
+                <span class="ov">[Your test data]</span>
+                <div class="scan"></div>
+              </div>
+              <figcaption>
+                <span><span class="ch1">CH1</span> [Measured signal, unit]</span>
+                <span><span class="refl">REF</span> [Target, unit]</span>
+                <span>[x per div] / [y per div]</span>
+              </figcaption>
+            </figure>
+            <p>[What the data shows, in one or two sentences.]</p>
+          </section>
+
+          <section aria-labelledby="s-change">
+            <h2 id="s-change" class="stencil">What I'd change</h2>
+            <ul class="chg"><li>[Change one]</li><li>[Change two]</li><li>[Change three]</li></ul>
+          </section>
+
+          <nav aria-label="More projects" class="more">
+            {prev ? <a class="pn" href={`${base}work/${prev.id}/`}><span class="l">← Previous · {prev.data.prj}</span><span class="t">{prev.data.title}</span></a> : <span></span>}
+            {next && <a class="pn nx" href={`${base}work/${next.id}/`}><span class="l">Next · {next.data.prj} →</span><span class="t">{next.data.title}</span></a>}
+          </nav>
+        </div>
+      </div>
+    </main>
+  </div>
+</Base>
+<style>
+  main{padding-bottom:220px}
+  .cols{display:flex;flex-wrap:wrap;gap:24px}
+  .body{position:relative;flex:1 1 100%;min-width:0;display:flex;flex-direction:column;background:color-mix(in srgb,var(--bg) 45%,transparent);-webkit-backdrop-filter:blur(1px);backdrop-filter:blur(1px);border:1px solid var(--panel-border);padding:8px 40px}
+  section{display:flex;flex-direction:column;gap:16px;padding:32px 0;border-top:1px solid var(--panel-border)}
+  section.first{border-top:0}
+  .broke{border-top:2px solid rgba(176,16,46,.6)}
+  h2{margin:0;font-size:32px;line-height:1.05;font-weight:700}
+  p{margin:0;font-size:17px;line-height:27px}
+  .dec{border:1px solid var(--panel-border);padding:16px;display:flex;flex-direction:column;gap:8px}
+  .w{font-size:17px;line-height:27px;font-weight:500}
+  .rej{font-family:var(--font-mono);font-size:14px;color:var(--text-muted)}
+  .fail{display:flex;flex-direction:column;gap:4px}
+  .mu{color:var(--text-muted)}
+  .cad{position:relative;aspect-ratio:3/2;background:var(--surface);border:1px solid var(--panel-border)}
+  .cad svg{position:absolute;inset:0;width:100%;height:100%}
+  .cad line{stroke:var(--accent);stroke-width:1.5;vector-effect:non-scaling-stroke}
+  .cad circle{fill:var(--accent)}
+  .cad span{position:absolute;font-family:var(--font-mono);font-size:14px;color:var(--accent)}
+  .cap{margin:-8px 0 0;font-size:14px;line-height:20px;color:var(--text-muted)}
+  .scope{margin:0;padding:12px;background:var(--bezel);border:1px solid var(--panel-border);border-radius:2px}
+  .screen{position:relative;aspect-ratio:2/1;background:var(--screen);overflow:hidden}
+  .screen svg{position:absolute;inset:0;width:100%;height:100%}
+  .grid line{stroke:var(--trace);stroke-opacity:.18;vector-effect:non-scaling-stroke}
+  .ax line{stroke:var(--trace);stroke-opacity:.4;vector-effect:non-scaling-stroke}
+  .ref{fill:none;stroke:var(--on-screen);stroke-opacity:.55;stroke-width:1.5;stroke-dasharray:6 6;vector-effect:non-scaling-stroke}
+  .trace{fill:none;stroke:var(--trace);stroke-width:2;vector-effect:non-scaling-stroke}
+  .ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:14px;color:var(--on-screen);opacity:.7}
+  figcaption{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:12px;font-family:var(--font-mono);font-size:14px;color:var(--text-muted)}
+  .ch1{color:var(--accent)}
+  .refl{color:var(--text)}
+  .chg{margin:0;padding-left:20px;font-size:17px;line-height:27px;display:flex;flex-direction:column;gap:8px}
+  .more{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--panel-border);padding:24px 0 32px}
+  .pn{display:flex;flex-direction:column;gap:4px;padding:12px 16px;border:1px solid var(--panel-border);color:var(--text);text-decoration:none;min-width:220px;transition:border-color var(--dur-hover) var(--ease-out),background-color var(--dur-hover) var(--ease-out)}
+  .pn:hover,.pn:focus-visible{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 6%,transparent)}
+  .nx{text-align:right;margin-left:auto}
+  .l{font-family:var(--font-mono);font-size:14px;color:var(--text-muted)}
+  .t{font-size:17px;font-weight:600}
+  @media (max-width:700px){.body{padding:8px 24px}}
+</style>

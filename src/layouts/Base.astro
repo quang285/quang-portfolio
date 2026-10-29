@@ -1,0 +1,33 @@
+---
+// Page shell: theme bootstrap, fonts, global styles, TV grain, blueprint backdrop, nav.
+import '../styles/tokens.css';
+import '../styles/components.css';
+import '../styles/global.css';
+import Blueprint from '../components/Blueprint.astro';
+import Nav from '../components/Nav.astro';
+interface Props { title: string; description?: string; home?: boolean }
+const { title, description = 'Portfolio of Nguyen Duy Quang: mechanical, mechatronics and design work.', home = false } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <script is:inline>
+      (function(){var t;try{t=localStorage.getItem('ndq-theme')}catch(e){}if(t!=='light'&&t!=='dark'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t})();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Chakra+Petch:wght@400;500;600&family=Share+Tech+Mono&display=swap" />
+  </head>
+  <body>
+    <div class="ndq-root">
+      <svg class="tv" aria-hidden="true" width="100%" height="100%"><filter id="tvnoise" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="1" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="discrete" tableValues="0 0 1 1"/><feFuncG type="discrete" tableValues="0 0 1 1"/><feFuncB type="discrete" tableValues="0 0 1 1"/></feComponentTransfer></filter><rect class="tvgrain" x="-50%" y="-50%" width="200%" height="200%" filter="url(#tvnoise)"/></svg>
+      <Blueprint />
+      <Nav home={home} />
+      <slot />
+    </div>
+  </body>
+</html>

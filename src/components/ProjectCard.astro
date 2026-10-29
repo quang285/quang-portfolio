@@ -1,0 +1,22 @@
+---
+interface Props {
+  slug: string;
+  prj: string;
+  title: string;
+  date: string;
+  result: string;
+  chips: string[];
+  active?: boolean;
+}
+const { slug, prj, title, date, result, chips, active = false } = Astro.props;
+const href = `${import.meta.env.BASE_URL}work/${slug}/`;
+---
+<div class="ndq-cardwrap">
+  <article class="ndq-card cut">
+    <div class="img cut" role="img" aria-label="Placeholder: project photo" style="--bw:2px">[Project image 4:3]</div>
+    <div class="ndq-tag"><span class:list={['ndq-led', { on: active }]}></span>{prj}, {date}</div>
+    <h3 class="t"><a href={href}>{title}</a></h3>
+    <p class="r">{result}</p>
+    <ul class="ndq-chips">{chips.map((c) => <li class="ndq-chip">{c}</li>)}</ul>
+  </article>
+</div>

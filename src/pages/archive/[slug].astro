@@ -1,0 +1,201 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  return (await getCollection('entries')).map((e) => ({ params: { slug: e.id }, props: { e } }));
+}
+const { e } = Astro.props;
+const d = e.data;
+const { Content } = await render(e);
+const base = import.meta.env.BASE_URL;
+const facts = [
+  ['Entry', d.id], ['Type', d.type], ['Date', d.date], ['Reading time', `${d.reading} min`], ['Updated', d.updated],
+];
+const nn = (i: number) => String(i + 1).padStart(2, '0');
+const tabs = [['all', 'All'], ['source', 'Sources'], ['drawing', 'Drawings'], ['photo', 'Photos'], ['cut', 'What I cut']];
+const label = Object.fromEntries(tabs);
+const board = ['source', 'drawing', 'photo', 'source', 'cut', 'drawing'];
+---
+<Base title={`${d.title} | Nguyen Duy Quang`}>
+  <div class="wrap">
+    <div class="ae-bar">
+      <span class="who">{d.id} · {d.title}</span>
+      <nav aria-label="Entry sections">
+        <a class="ae-a" href="#provocation">Provocation</a>
+        <a class="ae-a" href="#contents">Contents</a>
+        <a class="ae-a" href="#ch1">Chapters</a>
+        <a class="ae-a" href="#board">Board</a>
+        <a class="ae-a" href="#sources">Sources</a>
+        <a class="ae-a close" href={`${base}archive/`}>Close <span aria-hidden="true">✕</span></a>
+      </nav>
+    </div>
+    <main>
+      <header class="cut">
+        <nav aria-label="Breadcrumb" class="bc"><a class="crumb" href={`${base}archive/`}>← Archive</a><span aria-hidden="true">/</span><span aria-current="page">{d.id}</span></nav>
+        <div class="kick"><span class="neon">{d.id}</span><span>{d.type} · {d.topic}</span></div>
+        <h1 class="stencil rgb">{d.title}</h1>
+        <p class="lede">{d.argument}</p>
+        <dl class="facts">
+          {facts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+        </dl>
+      </header>
+
+      <div class="ae-body">
+        <section id="provocation" class="ae-sec" aria-labelledby="prov-h">
+          <span class="ae-eye">Provocation</span>
+          <h2 id="prov-h" class="stencil">[Provocation title]</h2>
+          <p>[Fact check or hook: the one claim this entry starts from.]</p>
+          <h3>[Subheading: the argument in one line]</h3>
+          <p>[Two or three paragraphs of essay.]</p>
+          <h3>[Subheading: the frame]</h3>
+          <p>[Essay continues.]</p>
+          <div><a class="ndq-btn secondary btn-s" href="#">[Open the source] <span aria-hidden="true">↗</span></a></div>
+        </section>
+
+        <section id="contents" class="ae-sec" aria-labelledby="contents-h">
+          <span class="ae-eye">Contents</span>
+          <h2 id="contents-h" class="stencil">Chapters</h2>
+          <ol class="toc">
+            {d.chapters.map((c, i) => (
+              <li><a class="ae-row" href={`#ch${i + 1}`}>
+                <span class="no">{nn(i)}</span>
+                <span class="th cut" aria-hidden="true"></span>
+                <span class="tt"><span class="t">{c.title}</span><span class="s">{c.summary}</span></span>
+                <span class="tag">{c.format}</span>
+              </a></li>
+            ))}
+          </ol>
+        </section>
+
+        <Content />
+
+        <section id="board" class="ae-sec" aria-labelledby="board-h">
+          <span class="ae-eye">Artifacts</span>
+          <h2 id="board-h" class="stencil">The board</h2>
+          <p>[One line: everything looked at along the way]</p>
+          <div class="arc-tabs" role="radiogroup" aria-label="Filter board">
+            {tabs.map(([t, l], i) => (
+              <Fragment>
+                <input type="radio" name="brd" id={`brd-${t}`} checked={i === 0} />
+                <label for={`brd-${t}`}>{l}</label>
+              </Fragment>
+            ))}
+          </div>
+          <div class="grid">
+            {board.map((t) => (
+              <div class="ndq-cardwrap arc-item" data-type={t}>
+                <article class="ndq-card cut card">
+                  <div class="img cut" role="img" aria-label="Placeholder: artifact">[Artifact]</div>
+                  <div class="k">{label[t]} · [Date]</div>
+                  <h4>[Artifact title]</h4>
+                  <p class="n">[Why it is on the board]</p>
+                  <div class="cr">[Credit]</div>
+                </article>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="sources" class="ae-sec" aria-labelledby="src-h">
+          <span class="ae-eye">Sources</span>
+          <h2 id="src-h" class="stencil">[N] things worth your time</h2>
+          <div class="srcs">
+            {[1, 2, 3, 4].map((n) => (
+              <article id={`src${n}`} class="src">
+                <span class="k">[{n}] [Type · Access]</span>
+                <h4><a href="#">[Source title]</a></h4>
+                <span class="by">[Author] · [Publication] · [Year]</span>
+                <p class="w">[Why it is worth your time]</p>
+                <details><summary>More</summary><p class="nt">[Notes]</p></details>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <div class="foot">
+          <span>Updated {d.updated} · {d.id}</span>
+          <a href={`${base}archive/`}>← Back to archive</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</Base>
+<style>
+  .wrap{padding-top:24px;padding-bottom:220px}
+  .ae-bar{position:sticky;top:54px;z-index:40;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;padding:4px 40px;margin:0 -40px 24px;background:color-mix(in srgb,var(--bg) 90%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--panel-border);font-family:var(--font-mono);font-size:14px}
+  .who{color:var(--text-muted)}
+  .ae-bar nav{display:flex;flex-wrap:wrap}
+  .ae-a{display:inline-flex;align-items:center;min-height:40px;padding:0 10px;color:var(--text);text-decoration:none;transition:color var(--dur-hover) var(--ease-out)}
+  .ae-a:hover,.ae-a:focus-visible{color:var(--accent)}
+  .close{color:var(--accent)}
+  header,.ae-body{background:color-mix(in srgb,var(--bg) 45%,transparent);-webkit-backdrop-filter:blur(1px);backdrop-filter:blur(1px)}
+  header{display:flex;flex-direction:column;gap:16px;--bw:1px;--bc:var(--panel-border);--cut:28px;padding:40px;margin:0 -40px 24px}
+  .bc{display:flex;align-items:center;gap:10px;min-height:44px;margin:-8px 0 0;font-family:var(--font-mono);font-size:14px;color:var(--text-muted)}
+  .kick{display:flex;flex-wrap:wrap;align-items:center;gap:14px;font-family:var(--font-mono);font-size:16px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent)}
+  .neon{background:var(--accent);color:var(--on-accent);padding:4px 8px 4px 11px}
+  h1{margin:0;font-size:clamp(36px,6vw,72px);line-height:1;font-weight:700}
+  .lede{margin:0;font-size:20px;line-height:30px;max-width:680px}
+  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin:8px 0 0;border:1px solid var(--panel-border)}
+  .facts div{padding:8px 16px;border-right:1px solid var(--panel-border);border-bottom:1px solid var(--panel-border);margin:0 -1px -1px 0}
+  .facts dt{font-family:var(--font-mono);font-size:14px;color:var(--text-muted)}
+  .facts dd{margin:4px 0 0;font-family:var(--font-mono);font-size:15px;line-height:22px}
+  .ae-body{border:1px solid var(--panel-border);padding:0 40px 16px;margin:0 -40px}
+  .ae-body :global(.ae-sec){display:flex;flex-direction:column;gap:16px;padding:40px 0;border-top:1px solid var(--panel-border);scroll-margin-top:140px}
+  .ae-body :global(.ae-sec:first-child){border-top:0}
+  .ae-body :global(.ae-eye){font-family:var(--font-mono);font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+  .ae-body :global(h2){margin:0;font-size:32px;line-height:1.1;font-weight:700;scroll-margin-top:140px}
+  .ae-body :global(.ae-sec > p){margin:0;font-size:17px;line-height:28px;max-width:680px}
+  h3{margin:16px 0 0;font-size:20px;font-weight:600}
+  .btn-s{padding:0 20px;gap:10px}
+  .toc{list-style:none;margin:0;padding:0;border-bottom:1px solid var(--panel-border)}
+  .ae-row{display:grid;grid-template-columns:48px 96px 1fr auto;gap:16px;align-items:center;padding:12px 8px;border-top:1px solid var(--panel-border);color:var(--text);text-decoration:none;transition:background-color .16s var(--ease-out)}
+  .ae-row:hover,.ae-row:focus-visible{background:color-mix(in srgb,var(--accent) 6%,transparent)}
+  .no{font-family:var(--font-mono);font-size:15px;color:var(--accent)}
+  .th{display:block;aspect-ratio:4/3;--cut:12px;background:var(--surface)}
+  .tt{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .t{font-size:17px;font-weight:600}
+  .s{font-size:14px;color:var(--text-muted)}
+  .tag{font-family:var(--font-mono);font-size:13px;color:var(--text-muted);border:1px solid var(--panel-border);padding:2px 8px}
+  .arc-tabs{display:flex;flex-wrap:wrap;gap:8px}
+  .arc-tabs input{position:absolute;opacity:0;pointer-events:none}
+  .arc-tabs label{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid var(--panel-border);font-family:var(--font-mono);font-size:14px;color:var(--text);cursor:pointer;transition:background-color .16s var(--ease-out),color .16s var(--ease-out),border-color .16s var(--ease-out)}
+  .arc-tabs label:hover{border-color:var(--accent);color:var(--accent)}
+  .arc-tabs input:checked+label{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+  .arc-tabs input:focus-visible+label{outline:2px solid var(--accent);outline-offset:2px}
+  .grid{display:flex;flex-wrap:wrap;gap:20px}
+  .grid .arc-item{flex:0 0 calc((100% - 40px)/3)}
+  .card{padding:14px;gap:6px}
+  .img{aspect-ratio:4/3;--cut:16px;margin-bottom:8px}
+  .k{font-family:var(--font-mono);font-size:13px;color:var(--accent)}
+  h4{margin:0;font-size:17px;font-weight:600}
+  .n{margin:0;font-size:14px;line-height:20px}
+  .cr{font-family:var(--font-mono);font-size:12px;color:var(--text-muted)}
+  #board:has(#brd-source:checked) .arc-item:not([data-type="source"]),
+  #board:has(#brd-drawing:checked) .arc-item:not([data-type="drawing"]),
+  #board:has(#brd-photo:checked) .arc-item:not([data-type="photo"]),
+  #board:has(#brd-cut:checked) .arc-item:not([data-type="cut"]){display:none}
+  .srcs{display:flex;flex-direction:column;gap:12px}
+  .src{padding:20px;border:1px solid var(--panel-border);display:flex;flex-direction:column;gap:6px;scroll-margin-top:140px}
+  .src h4{font-size:18px}
+  .src h4 a{color:var(--text)}
+  .by{font-family:var(--font-mono);font-size:13px;color:var(--text-muted)}
+  .w{margin:0;font-size:15px;line-height:22px}
+  summary{display:flex;align-items:center;min-height:32px;font-family:var(--font-mono);font-size:13px;color:var(--accent);cursor:pointer}
+  .nt{margin:4px 0 0;font-size:14px;color:var(--text-muted)}
+  .foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding:24px 0 8px;border-top:1px solid var(--panel-border);font-family:var(--font-mono);font-size:13px;color:var(--text-muted)}
+  .foot a{display:inline-flex;align-items:center;min-height:44px;color:var(--accent)}
+  @media (max-width:1000px){.grid .arc-item{flex:1 1 240px}}
+  @media (max-width:960px){.ae-bar,header,.ae-body{margin-left:-24px;margin-right:-24px}.ae-bar{padding:4px 24px}}
+  @media (max-width:700px){
+    .ae-bar{position:static;margin:0 0 16px;padding:4px 0}
+    .ae-bar nav{flex-wrap:nowrap;overflow-x:auto;max-width:100%}
+    .ae-a{white-space:nowrap}
+    header,.ae-body{margin-left:0;margin-right:0}
+    header{padding:24px}
+    .ae-body{padding:0 24px 16px}
+    .ae-row{grid-template-columns:32px 64px 1fr}
+    .tag{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){.ae-a,.ae-row,.arc-tabs label{transition:none}}
+</style>

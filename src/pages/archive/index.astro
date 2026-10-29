@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ArchiveCard from '../../components/ArchiveCard.astro';
+// Archive keeps file order (01-, 02-, ...); items are not ranked.
+const items = (await getCollection('archive')).sort((a, b) => a.id.localeCompare(b.id));
+const tabs = ['all', 'research', 'paper', 'film', 'book', 'music', 'note'];
+const base = import.meta.env.BASE_URL;
+---
+<Base title="Archive | Nguyen Duy Quang">
+  <div class="wrap">
+    <main>
+      <header class="cut">
+        <nav aria-label="Breadcrumb" class="bc"><a class="crumb" href={base}>← Home</a><span aria-hidden="true">/</span><span aria-current="page">Archive</span></nav>
+        <div class="kick"><span class="neon">ARC</span><span>Research · Notes · Reviews</span></div>
+        <h1 class="stencil rgb">Archive</h1>
+        <p class="lede">[One line: what lives here, research write-ups and notes on films, books and music]</p>
+      </header>
+      <section aria-label="Archive items" class="cut">
+        <div class="arc-tabs" role="radiogroup" aria-label="Filter archive">
+          {tabs.map((t, i) => (
+            <Fragment>
+              <input type="radio" name="arc" id={`arc-${t}`} checked={i === 0} />
+              <label for={`arc-${t}`}>{t.charAt(0).toUpperCase() + t.slice(1)}</label>
+            </Fragment>
+          ))}
+        </div>
+        <div class="arc-grid">
+          {items.map((it) => <ArchiveCard {...it.data} />)}
+        </div>
+      </section>
+    </main>
+  </div>
+  <div aria-hidden="true" class="spacer"></div>
+</Base>
+<style>
+  main{padding-top:120px}
+  header,section{background:color-mix(in srgb,var(--bg) 45%,transparent);-webkit-backdrop-filter:blur(1px);backdrop-filter:blur(1px);--bw:1px;--bc:var(--panel-border);--cut:28px}
+  header{display:flex;flex-direction:column;gap:16px;padding:40px;margin:0 -40px 24px}
+  section{padding:32px 40px 40px;margin:0 -40px}
+  .bc{display:flex;align-items:center;gap:10px;min-height:44px;margin:-8px 0 0;font-family:var(--font-mono);font-size:14px;color:var(--text-muted)}
+  .kick{display:flex;flex-wrap:wrap;align-items:center;gap:14px;font-family:var(--font-mono);font-size:16px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent)}
+  .neon{background:var(--accent);color:var(--on-accent);padding:4px 8px 4px 11px}
+  h1{margin:0;font-size:clamp(36px,6vw,72px);line-height:1;font-weight:700}
+  .lede{margin:0;font-size:20px;line-height:30px;max-width:640px}
+  .arc-tabs{display:flex;flex-wrap:wrap;gap:8px}
+  .arc-tabs input{position:absolute;opacity:0;pointer-events:none}
+  .arc-tabs label{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid var(--panel-border);font-family:var(--font-mono);font-size:14px;color:var(--text);cursor:pointer;transition:background-color .16s var(--ease-out),color .16s var(--ease-out),border-color .16s var(--ease-out)}
+  .arc-tabs label:hover{border-color:var(--accent);color:var(--accent)}
+  .arc-tabs input:checked+label{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+  .arc-tabs input:focus-visible+label{outline:2px solid var(--accent);outline-offset:2px}
+  .arc-grid{display:flex;flex-wrap:wrap;gap:24px;margin-top:24px}
+  .arc-grid :global(.arc-item){flex:0 0 calc((100% - 48px)/3)}
+  @media (max-width:1000px){.arc-grid :global(.arc-item){flex:1 1 280px}}
+  @media (max-width:960px){header,section{margin-left:-24px;margin-right:-24px}}
+  @media (max-width:700px){header,section{margin-left:0;margin-right:0;padding:24px}}
+  @media (prefers-reduced-motion:reduce){.arc-tabs label{transition:none}}
+  .spacer{height:220px}
+  section:has(#arc-research:checked) :global(.arc-item:not([data-type="research"])),
+  section:has(#arc-paper:checked) :global(.arc-item:not([data-type="paper"])),
+  section:has(#arc-film:checked) :global(.arc-item:not([data-type="film"])),
+  section:has(#arc-book:checked) :global(.arc-item:not([data-type="book"])),
+  section:has(#arc-music:checked) :global(.arc-item:not([data-type="music"])),
+  section:has(#arc-note:checked) :global(.arc-item:not([data-type="note"])){display:none}
+</style>

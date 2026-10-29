@@ -1,0 +1,83 @@
+/* Generated from portfolio-handoff/tokens.json. Hex8 values are colours with alpha. */
+:root {
+  --font-sans: "Chakra Petch", system-ui, sans-serif;
+  --font-mono: "Share Tech Mono", ui-monospace, monospace;
+  --font-display: "Cinzel", Georgia, serif;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-96: 96px;
+  --radius-0: 0px;
+  --radius-control: 2px;
+  --notch-panel: 28px;
+  --notch-card: 34px;
+  --notch-image: 20px;
+  --dur-fast: 160ms;
+  --dur-hover: 180ms;
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --dur-scan: 11s;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0E0F14;
+  --text: #E6E3DC;
+  --text-muted: #A8A5B0;
+  --accent: #FF1F3D;
+  --accent-fill: #D41434;
+  --accent-hover: #FF1F3D;
+  --on-accent: #F3EFE8;
+  --accent-secondary: #FF6A3D;
+  --holo: #FF5A28;
+  --holo-text: #FF6A3D;
+  --holo-fill: #FF5A281A;
+  --holo-lit: #FF5A2866;
+  --grid-line: #FF5A281F;
+  --grid-dot: #FF5A2859;
+  --panel: #0E0F1473;
+  --panel-border: #FF1F3D59;
+  --card: #0E0F148C;
+  --card-hover: #16161CF7;
+  --surface: #1F1F24B2;
+  --row-highlight: #FF1F3D24;
+  --focus: #FF1F3D;
+  --bezel: #1B1A26;
+  --screen: #07080C;
+  --trace: #7878FF;
+  --on-screen: #E8E6E3;
+  --led-off: #6E6D78;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F4F5F7;
+  --text: #0A0A0C;
+  --text-muted: #55565F;
+  --accent: #3F00FF;
+  --accent-fill: #3F00FF;
+  --accent-hover: #2A00B0;
+  --on-accent: #F4F5F7;
+  --accent-secondary: #3F00FF;
+  --holo: #00A8E8;
+  --holo-text: #006A9E;
+  --holo-fill: #00A8E81A;
+  --holo-lit: #00A8E859;
+  --grid-line: #00A8E824;
+  --grid-dot: #00A8E866;
+  --panel: #F4F5F773;
+  --panel-border: #3F00FF38;
+  --card: #F4F5F78C;
+  --card-hover: #F4F5F7F7;
+  --surface: #E7E6F0B2;
+  --row-highlight: #3F00FF1A;
+  --focus: #3F00FF;
+  --bezel: #D9D7E2;
+  --screen: #0E0F14;
+  --trace: #7878FF;
+  --on-screen: #E8E6E3;
+  --led-off: #B4B3BD;
+}

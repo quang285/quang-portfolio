@@ -1,0 +1,92 @@
+---
+id: ARC-001
+title: "[Entry title]"
+type: "[Type]"
+topic: "[Topic]"
+argument: "[The argument in one line]"
+date: "[Date]"
+reading: "[N]"
+updated: "[Date]"
+chapters:
+  - title: "[Chapter 1 title]"
+    summary: "[One-line summary]"
+    format: "[Format]"
+  - title: "[Chapter 2 title]"
+    summary: "[One-line summary]"
+    format: "[Format]"
+  - title: "[Chapter 3 title]"
+    summary: "[One-line summary]"
+    format: "[Format]"
+  - title: "[Chapter 4 title]"
+    summary: "[One-line summary]"
+    format: "[Format]"
+---
+import Chapter from '../../components/mdx/Chapter.astro';
+import Stats from '../../components/mdx/Stats.astro';
+import Figure from '../../components/mdx/Figure.astro';
+import Deeper from '../../components/mdx/Deeper.astro';
+import Fn from '../../components/mdx/Fn.astro';
+
+<Chapter n={1} theme="[Theme]" title="[Chapter 1 title]" deck="[Deck: one sentence]">
+
+[Body paragraph with a footnote marker]<Fn n={1} /> [continues.]
+
+<Stats items={[{ v: '[Value]', l: '[Label with unit]' }, { v: '[Value]', l: '[Label with unit]' }, { v: '[Value]', l: '[Label with unit]' }]} />
+
+<Figure lead="[Fig. 1.1 lead-in.]" caption="[Caption]" source="[Source]" />
+
+<Deeper what="[what this expands]">
+
+[Extra detail for readers who want it.]
+
+</Deeper>
+
+</Chapter>
+
+<Chapter n={2} theme="[Theme]" title="[Chapter 2 title]" deck="[Deck: one sentence]">
+
+[Body paragraph with a footnote marker]<Fn n={2} /> [continues.]
+
+<Stats items={[{ v: '[Value]', l: '[Label with unit]' }, { v: '[Value]', l: '[Label with unit]' }, { v: '[Value]', l: '[Label with unit]' }]} />
+
+<Figure lead="[Fig. 2.1 lead-in.]" caption="[Caption]" source="[Source]" />
+
+<Deeper what="[what this expands]">
+
+[Extra detail for readers who want it.]
+
+</Deeper>
+
+</Chapter>
+
+<Chapter n={3} theme="[Theme]" title="[Chapter 3 title]" deck="[Deck: one sentence]">
+
+[Body paragraph with a footnote marker]<Fn n={3} /> [continues.]
+
+<Stats items={[{ v: '[Value]', l: '[Label with unit]' }, { v: '[Value]', l: '[Label with unit]' }, { v: '[Value]', l: '[Label with unit]' }]} />
+
+<Figure lead="[Fig. 3.1 lead-in.]" caption="[Caption]" source="[Source]" />
+
+<Deeper what="[what this expands]">
+
+[Extra detail for readers who want it.]
+
+</Deeper>
+
+</Chapter>
+
+<Chapter n={4} theme="[Theme]" title="[Chapter 4 title]" deck="[Deck: one sentence]">
+
+[Body paragraph with a footnote marker]<Fn n={4} /> [continues.]
+
+<Stats items={[{ v: '[Value]', l: '[Label with unit]' }, { v: '[Value]', l: '[Label with unit]' }, { v: '[Value]', l: '[Label with unit]' }]} />
+
+<Figure lead="[Fig. 4.1 lead-in.]" caption="[Caption]" source="[Source]" />
+
+<Deeper what="[what this expands]">
+
+[Extra detail for readers who want it.]
+
+</Deeper>
+
+</Chapter>

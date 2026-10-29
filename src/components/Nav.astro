@@ -1,0 +1,43 @@
+---
+// Sticky HUD nav: status block, section links, archive link, mode toggle.
+interface Props { home?: boolean }
+const { home = false } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const to = (id: string) => (home ? `#${id}` : `${base}#${id}`);
+const links = [['home', 'Home'], ['work', 'Work'], ['about', 'About'], ['contact', 'Contact']];
+---
+<div class="navbar">
+  <div class="navin">
+    <nav class="hud ndq-nav" aria-label="Main">
+      <div class="status">
+        <span class="acc">[</span><span class="led ledpulse"></span><span class="acc">NDQ/001</span><span class="acc">]</span>
+        <span class="acc">online</span><span class="cur" aria-hidden="true"></span>
+      </div>
+      <ul>
+        {links.map(([id, label]) => <li><a class={`nl nl-${id}`} href={to(id)}>{label}</a></li>)}
+        <li aria-hidden="true" class="sep">|</li>
+        <li><a class="nl" href={`${base}archive/`}>Archive</a></li>
+        <li>
+          <button class="mode" type="button" id="mode" aria-label="Switch to dark mode">
+            <span aria-hidden="true">☀</span><span class="sw" aria-hidden="true"><span class="knob"></span></span><span aria-hidden="true">☾</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<script is:inline>
+(function(){var b=document.getElementById('mode'),r=document.documentElement;function s(){b.setAttribute('aria-label',r.dataset.theme==='dark'?'Switch to light mode':'Switch to dark mode')}s();b.addEventListener('click',function(){r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';try{localStorage.setItem('ndq-theme',r.dataset.theme)}catch(e){}s()})})();
+</script>
+<style>
+  .navbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:2px solid var(--accent)}
+  .navin{padding:0 32px}
+  .ndq-nav{flex-wrap:wrap;gap:8px 24px;padding:4px 16px;background:none;border:0;-webkit-backdrop-filter:none;backdrop-filter:none;position:relative}
+  .status{display:flex;align-items:center;gap:10px;min-height:44px;color:var(--text-muted)}
+  .status .led{background:var(--accent);margin:0}
+  .acc{color:var(--accent)}
+  .cur{display:inline-block;width:8px;height:14px;background:var(--accent)}
+  .ndq-nav ul{flex-wrap:wrap;align-items:center}
+  .sep{color:var(--accent);opacity:.5}
+  @media (max-width:600px){.navin{padding:0 8px}.ndq-nav{padding:4px 8px}}
+</style>

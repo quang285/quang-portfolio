@@ -1,0 +1,19 @@
+---
+// Constraint chips and a two-column spec table.
+interface Row { k: string; v: string; }
+interface Props { chips: string[]; rows: Row[]; }
+const { chips, rows } = Astro.props;
+---
+<ul class="cc">{chips.map((c) => <li>{c}</li>)}</ul>
+<table class="st">
+  <tbody>
+    {rows.map((r) => <tr><th scope="row">{r.k}</th><td>{r.v}</td></tr>)}
+  </tbody>
+</table>
+<style>
+  .cc{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+  .cc li{font-family:var(--font-mono);font-size:14px;color:var(--text-muted);border:1px solid var(--text-muted);padding:4px 8px}
+  .st{border-collapse:collapse;font-size:15px;line-height:22px;border:1px solid var(--panel-border);width:100%}
+  th{text-align:left;padding:8px 16px;border-bottom:1px solid var(--panel-border);background:var(--surface);font-family:var(--font-mono);font-size:14px;font-weight:400;color:var(--text-muted);width:40%}
+  td{padding:8px 16px;border-bottom:1px solid var(--panel-border);font-family:var(--font-mono)}
+</style>

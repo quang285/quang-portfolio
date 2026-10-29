@@ -1,0 +1,31 @@
+---
+// Tools and My part. Renders as a sticky side rail on wide screens and as an inline grid below 1360px (CSS only).
+interface Props { tools: string; part: string; variant: 'side' | 'inline'; }
+const { tools, part, variant } = Astro.props;
+---
+{variant === 'side' ? (
+  <aside class="pd-side" aria-label="Project details">
+    <div class="rail cut">
+      <div class="g"><h3>Tools</h3><p class="m">{tools}</p></div>
+      <div class="g"><h3>My part</h3><p>{part}</p></div>
+    </div>
+  </aside>
+) : (
+  <div class="pd-inline">
+    <div class="g"><h3>Tools</h3><p class="m">{tools}</p></div>
+    <div class="g"><h3>My part</h3><p>{part}</p></div>
+  </div>
+)}
+<style>
+  .pd-side{display:none}
+  .rail{position:sticky;top:88px;display:flex;flex-direction:column;gap:20px;background:color-mix(in srgb,var(--bg) 45%,transparent);-webkit-backdrop-filter:blur(1px);backdrop-filter:blur(1px);--bw:1px;--bc:var(--panel-border);--cut:20px;padding:20px}
+  .pd-inline{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px 40px;padding:32px 0;border-bottom:1px solid var(--panel-border)}
+  .g{display:flex;flex-direction:column;gap:8px}
+  h3{margin:0;font-family:var(--font-mono);font-size:14px;font-weight:400;color:var(--text-muted)}
+  p{margin:0;font-size:15px;line-height:22px}
+  .m{font-family:var(--font-mono)}
+  @media (min-width:1360px){
+    .pd-side{display:block;position:absolute;top:0;bottom:0;left:calc(100% + 24px);width:min(240px,calc((100vw - 100%) / 2 - 72px))}
+    .pd-inline{display:none !important}
+  }
+</style>

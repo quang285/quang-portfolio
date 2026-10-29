@@ -1,0 +1,13 @@
+---
+interface Props { items: { v: string; l: string }[]; }
+const { items } = Astro.props;
+---
+<div class="stats">
+  {items.map((s) => <div class="st"><div class="v">{s.v}</div><div class="l">{s.l}</div></div>)}
+</div>
+<style>
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+  .st{padding:16px;border:1px solid var(--panel-border)}
+  .v{font-family:var(--font-display);font-size:36px;font-weight:700;line-height:1}
+  .l{margin-top:6px;font-family:var(--font-mono);font-size:13px;color:var(--text-muted)}
+</style>

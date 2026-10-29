@@ -1,0 +1,10 @@
+---
+// Footnote marker that links to a source card on the same page.
+interface Props { n: number; }
+const { n } = Astro.props;
+---
+<sup><a href={`#src${n}`} aria-label={`Source ${n}`}>[{n}]</a></sup>
+<style>
+  a{color:var(--accent);font-family:var(--font-mono);font-size:12px;padding:4px 2px;text-decoration:none}
+  a:hover,a:focus-visible{text-decoration:underline}
+</style>

@@ -1,0 +1,17 @@
+---
+// One chapter section of an archive entry. id chN matches the Contents rows.
+interface Props { n: number; theme: string; title: string; deck: string; }
+const { n, theme, title, deck } = Astro.props;
+const nn = String(n).padStart(2, '0');
+---
+<section id={`ch${n}`} class="ae-sec" aria-labelledby={`ch${n}-h`}>
+  <div class="hd"><span aria-hidden="true" class="num">{nn}</span><span class="ae-eye">Chapter {nn} · {theme}</span></div>
+  <h2 id={`ch${n}-h`} class="stencil">{title}</h2>
+  <p class="deck">{deck}</p>
+  <slot />
+</section>
+<style>
+  .hd{display:flex;align-items:baseline;gap:20px}
+  .num{font-family:var(--font-display);font-size:72px;font-weight:700;line-height:.9;color:var(--accent);opacity:.25}
+  .deck{color:var(--text-muted);font-size:20px;line-height:30px}
+</style>

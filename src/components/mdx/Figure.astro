@@ -1,0 +1,15 @@
+---
+interface Props { lead: string; caption: string; source: string; }
+const { lead, caption, source } = Astro.props;
+---
+<figure>
+  <div class="cut ph" role="img" aria-label="Placeholder: figure">[Figure]</div>
+  <figcaption><b>{lead}</b> <i>{caption}</i> <span>· {source}</span></figcaption>
+</figure>
+<style>
+  figure{margin:8px 0 0}
+  .ph{--cut:20px;aspect-ratio:16/9;background:var(--surface);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:14px;color:var(--text-muted)}
+  figcaption{margin-top:10px;font-size:14px;line-height:21px;color:var(--text-muted)}
+  b{color:var(--text)}
+  span{font-family:var(--font-mono);font-size:13px}
+</style>

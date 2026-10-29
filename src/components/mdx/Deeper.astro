@@ -1,0 +1,14 @@
+---
+interface Props { what: string; }
+const { what } = Astro.props;
+---
+<details class="ae-deeper">
+  <summary>Deeper: {what}</summary>
+  <slot />
+</details>
+<style>
+  .ae-deeper{border:1px solid var(--panel-border);padding:0 16px}
+  summary{display:flex;align-items:center;min-height:44px;font-family:var(--font-mono);font-size:14px;color:var(--accent);cursor:pointer}
+  .ae-deeper[open] summary{border-bottom:1px solid var(--panel-border);margin-bottom:16px}
+  .ae-deeper :global(p){padding-bottom:16px}
+</style>
