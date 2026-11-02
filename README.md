@@ -2,7 +2,7 @@
 
 Portfolio of Nguyen Duy Quang, built with Astro as a static site and deployed to GitHub Pages.
 
-Live: https://quang285.github.io/quang-portfolio/
+Live: https://duyquangnguyen.com/
 
 Text in `[square brackets]` is placeholder copy. Replace it with real content.
 
@@ -15,7 +15,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:4321/quang-portfolio/. Every page lives under the `/quang-portfolio/` base path.
+Open http://localhost:4321/.
 
 Other commands:
 
@@ -87,9 +87,9 @@ To deploy:
 git push origin main
 ```
 
-You can follow the run in the repo's Actions tab. The site is at https://quang285.github.io/quang-portfolio/.
+You can follow the run in the repo's Actions tab. The site is at https://duyquangnguyen.com/.
 
-A custom domain isn't set up yet. When you add one, set `site` in `astro.config.mjs`, remove `base` if it serves from the root, and add `public/CNAME`.
+The custom domain is set in `public/CNAME`, in `site` in `astro.config.mjs`, and under **Settings > Pages > Custom domain**. The site serves from the root, so there is no `base`.
 
 ## Notes
 
