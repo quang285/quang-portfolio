@@ -66,8 +66,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--focus);outline-offs
 .bp-tb div{border:1px solid var(--bpM);padding:4px 8px;display:flex;flex-direction:column;gap:2px}
 .bp-tb small{font-size:9px;opacity:.75}.bp-tb b{font-weight:400;font-size:13px}
 .bp-stamp{position:absolute;right:484px;bottom:54px;width:92px;height:92px;border-radius:50%;border:1.5px solid var(--bpL);box-shadow:inset 0 0 0 5px transparent,inset 0 0 0 6px var(--bpL);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;transform:rotate(-12deg)}
-.bp-scan{position:absolute;left:0;right:0;height:90px;top:-120px;opacity:0;background:linear-gradient(to bottom,transparent,var(--bpG) 70%,var(--bpL) 97%,transparent);animation:bpscan 11s linear infinite}
-@keyframes bpscan{0%{top:-120px;opacity:0}2%{opacity:1}24%{top:100%;opacity:1}25%,100%{top:100%;opacity:0}}
+.bp-scan{position:absolute;inset:0;opacity:0;background:linear-gradient(to bottom,transparent,var(--bpG) 70%,var(--bpL) 97%,transparent) bottom/100% 90px no-repeat;animation:bpscan 11s linear infinite}
+@keyframes bpscan{0%{transform:translateY(-100%);opacity:0}2%{opacity:1}24%{transform:translateY(90px);opacity:1}25%,100%{transform:translateY(90px);opacity:0}}
 @keyframes bpjit{0%,100%{transform:none}5%{transform:translateX(3px)}5.6%{transform:none}11%{transform:translateX(-4px)}11.4%{transform:none}17%{transform:translateX(2px)}17.5%{transform:none}}
 .bp-sk{position:absolute;overflow:visible;color:var(--bpL)}
 .bp-sk *{vector-effect:non-scaling-stroke}.bp-sk [pathLength]{vector-effect:none}
